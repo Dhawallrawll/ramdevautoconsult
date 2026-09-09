@@ -211,6 +211,23 @@
 
   #inventory{ background:var(--asphalt-2); border-top:1px solid var(--steel-line); border-bottom:1px solid var(--steel-line); }
 
+  /* brand chip strip */
+  .brand-strip{ display:flex; flex-wrap:wrap; gap:9px; margin-bottom:22px; }
+  .brand-chip{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--asphalt); border:1px solid var(--steel-line); color:var(--chalk-dim);
+    border-radius:20px; padding:7px 14px 7px 8px; font-size:0.84rem; font-weight:500;
+    transition:border-color .15s, color .15s, background .15s;
+  }
+  .brand-chip .mark{
+    width:22px; height:22px; border-radius:50%; background:var(--asphalt-3);
+    color:var(--chalk); font-family:'Rajdhani',sans-serif; font-weight:700; font-size:0.72rem;
+    display:flex; align-items:center; justify-content:center; flex:none;
+  }
+  .brand-chip:hover{ border-color:rgba(242,177,52,0.5); color:var(--chalk); }
+  .brand-chip.active{ background:var(--amber); border-color:var(--amber); color:var(--ink); }
+  .brand-chip.active .mark{ background:rgba(30,27,24,0.18); color:var(--ink); }
+
   /* filter bar */
   .filter-bar{
     display:flex; flex-wrap:wrap; gap:12px; align-items:center;
@@ -509,6 +526,8 @@
       <p>Every vehicle listed here has been through Ramdev's own inspection. Tap a car to call or message about it directly.</p>
     </div>
 
+    <div class="brand-strip" id="brandStrip"></div>
+
     <div class="filter-bar">
       <div>
         <label for="fStatus">Status</label>
@@ -636,6 +655,10 @@
             <input id="iPhoto" type="file" accept="image/*" multiple>
             <div id="iPhotoPreviews" class="photo-preview-grid"></div>
           </div>
+          <div class="field">
+            <label for="iBrand">Company / brand</label>
+            <select id="iBrand"></select>
+          </div>
           <div class="field-row">
             <div class="field"><label for="iName">Car name</label><input id="iName" type="text" placeholder="Maruti Swift"></div>
             <div class="field"><label for="iModel">Model no. / year</label><input id="iModel" type="text" placeholder="VXI 2019"></div>
@@ -724,9 +747,9 @@ if (firebaseReady) {
 
 /* ---------------- sample data (shown only when Firebase IS connected but no real car has been added yet) ---------------- */
 const SAMPLE_CARS = [
-  { id:'s1', sample:true, photos:[], name:'Maruti Swift', model:'VXI · 2019', ownerNum:'1st owner', vehicleNo:'RJ27 CA 4410', km:'42,000', rate:'385000', condition:'Excellent', fuel:'Petrol', status:'available' },
-  { id:'s2', sample:true, photos:[], name:'Hyundai i20', model:'Sportz · 2017', ownerNum:'2nd owner', vehicleNo:'RJ27 CB 7712', km:'61,500', rate:'420000', condition:'Good', fuel:'Petrol', status:'available' },
-  { id:'s3', sample:true, photos:[], name:'Mahindra Bolero', model:'SLE · 2016', ownerNum:'1st owner', vehicleNo:'RJ27 CC 2098', km:'78,200', rate:'465000', condition:'Fair', fuel:'Diesel', status:'sold' }
+  { id:'s1', sample:true, photos:[], brand:'Maruti Suzuki', name:'Maruti Swift', model:'VXI · 2019', ownerNum:'1st owner', vehicleNo:'RJ27 CA 4410', km:'42,000', rate:'385000', condition:'Excellent', fuel:'Petrol', status:'available' },
+  { id:'s2', sample:true, photos:[], brand:'Hyundai', name:'Hyundai i20', model:'Sportz · 2017', ownerNum:'2nd owner', vehicleNo:'RJ27 CB 7712', km:'61,500', rate:'420000', condition:'Good', fuel:'Petrol', status:'available' },
+  { id:'s3', sample:true, photos:[], brand:'Mahindra', name:'Mahindra Bolero', model:'SLE · 2016', ownerNum:'1st owner', vehicleNo:'RJ27 CC 2098', km:'78,200', rate:'465000', condition:'Fair', fuel:'Diesel', status:'sold' }
 ];
 
 /* ---------------------------------------------------------------------------
@@ -741,8 +764,8 @@ const SAMPLE_CARS = [
 --------------------------------------------------------------------------- */
 const LOCAL_KEY = 'ramdevAutoConsultCars';
 const LOCAL_SEED_CARS = [
-  { id:'local-1', photos:[], name:'Maruti Swift', model:'VXI · 2019', ownerNum:'1st owner', vehicleNo:'RJ27 CA 4410', km:'42,000', rate:'385000', condition:'Excellent', fuel:'Petrol', status:'available' },
-  { id:'local-2', photos:[], name:'Hyundai i20', model:'Sportz · 2017', ownerNum:'2nd owner', vehicleNo:'RJ27 CB 7712', km:'61,500', rate:'420000', condition:'Good', fuel:'Petrol', status:'available' }
+  { id:'local-1', photos:[], brand:'Maruti Suzuki', name:'Maruti Swift', model:'VXI · 2019', ownerNum:'1st owner', vehicleNo:'RJ27 CA 4410', km:'42,000', rate:'385000', condition:'Excellent', fuel:'Petrol', status:'available' },
+  { id:'local-2', photos:[], brand:'Hyundai', name:'Hyundai i20', model:'Sportz · 2017', ownerNum:'2nd owner', vehicleNo:'RJ27 CB 7712', km:'61,500', rate:'420000', condition:'Good', fuel:'Petrol', status:'available' }
 ];
 
 function loadLocalCars(){
@@ -842,14 +865,47 @@ document.getElementById('carGrid').addEventListener('click', (e) => {
 
 const FUEL_TYPES = ['Petrol','Diesel','CNG','Electric'];
 const CONDITIONS = ['Excellent','Good','Fair'];
+const BRANDS = [
+  'Maruti Suzuki','Hyundai','Tata Motors','Mahindra','Honda','Toyota','Kia',
+  'Renault','Nissan','Ford','Volkswagen','Skoda','MG Motor','Chevrolet',
+  'Datsun','Jeep','BMW','Mercedes-Benz','Audi','Other'
+];
+
+let selectedBrand = '';
+
+function brandInitials(name){
+  return name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+}
+
+function renderBrandStrip(){
+  const strip = document.getElementById('brandStrip');
+  const chips = [{ label:'All brands', value:'' }, ...BRANDS.map(b => ({ label:b, value:b }))];
+  strip.innerHTML = chips.map(c => `
+    <button type="button" class="brand-chip${selectedBrand===c.value ? ' active':''}" data-brand="${c.value}">
+      ${c.value ? `<span class="mark">${brandInitials(c.value)}</span>` : ''}${c.label}
+    </button>`).join('');
+  strip.querySelectorAll('.brand-chip').forEach(btn =>
+    btn.addEventListener('click', () => {
+      selectedBrand = btn.dataset.brand;
+      renderBrandStrip();
+      applyFiltersAndRender();
+    })
+  );
+}
+renderBrandStrip();
 
 function populateFilterOptions(){
   const fuelSel = document.getElementById('fFuel');
   const condSel = document.getElementById('fCondition');
+  const brandSel = document.getElementById('iBrand');
   // Fixed lists so every category (including CNG and Electric) is always
   // selectable, even before any car of that type has been listed yet.
   fuelSel.innerHTML = '<option value="">All fuel types</option>' + FUEL_TYPES.map(f=>`<option value="${f}">${f}</option>`).join('');
   condSel.innerHTML = '<option value="">All conditions</option>' + CONDITIONS.map(c=>`<option value="${c}">${c}</option>`).join('');
+  if (brandSel && !brandSel.dataset.filled) {
+    brandSel.innerHTML = BRANDS.map(b=>`<option value="${b}">${b}</option>`).join('');
+    brandSel.dataset.filled = 'true';
+  }
 }
 
 function applyFiltersAndRender(){
@@ -861,7 +917,8 @@ function applyFiltersAndRender(){
   let list = allCars.filter(c =>
     (!fuel || c.fuel === fuel) &&
     (!condition || c.condition === condition) &&
-    (!statusFilter || (c.status || 'available') === statusFilter)
+    (!statusFilter || (c.status || 'available') === statusFilter) &&
+    (!selectedBrand || c.brand === selectedBrand)
   );
 
   const numRate = c => Number(String(c.rate).replace(/[^0-9]/g,'')) || 0;
@@ -875,7 +932,7 @@ function applyFiltersAndRender(){
   document.getElementById('filterCount').textContent = list.length ? `${list.length} vehicle${list.length===1?'':'s'}` : '';
   grid.innerHTML = list.length
     ? list.map(carCardHTML).join('')
-    : `<div class="empty-state">No vehicles match those filters right now — call 88245 19595 and we'll check the yard for you.</div>`;
+    : `<div class="empty-state">No ${selectedBrand ? selectedBrand + ' ' : ''}vehicles match those filters right now — call 88245 19595 and we'll check the yard for you.</div>`;
 }
 
 ['fStatus','fFuel','fCondition','fSort'].forEach(id =>
@@ -1083,6 +1140,7 @@ document.getElementById('iPhoto').addEventListener('change', async (e) => {
 function readForm(){
   return {
     photos: currentPhotos.slice(),
+    brand: document.getElementById('iBrand').value,
     name: document.getElementById('iName').value.trim(),
     model: document.getElementById('iModel').value.trim(),
     ownerNum: document.getElementById('iOwnerNum').value.trim(),
@@ -1100,6 +1158,7 @@ function clearForm(){
   document.getElementById('iPhoto').value = '';
   currentPhotos = [];
   renderPhotoPreviews();
+  document.getElementById('iBrand').value = BRANDS[0];
   document.getElementById('iStatus').value = 'available';
   document.getElementById('editId').value = '';
   document.getElementById('formTitle').textContent = 'Add a car';
