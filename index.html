@@ -47,17 +47,25 @@
 
 <style>
   :root{
-    --asphalt:      #1E1B18;
-    --asphalt-2:    #29241F;
-    --asphalt-3:    #34302A;
-    --steel-line:   rgba(237,230,216,0.14);
-    --chalk:        #EDE6D8;
-    --chalk-dim:    #C9BFAE;
-    --amber:        #F2B134;
-    --amber-2:      #FFD581;
-    --taillight:    #C1443C;
-    --ink:          #201C18;
-    --good:         #7FA073;
+    --bg:           #FFFFFF;
+    --bg-soft:      #F6F5F2;
+    --surface:      #FFFFFF;
+    --line:         rgba(20,18,26,0.09);
+    --line-strong:  rgba(20,18,26,0.16);
+    --ink:          #17151C;
+    --ink-dim:      #6B6875;
+    --accent:       #FF5A36;
+    --accent-deep:  #E23F1D;
+    --accent-soft:  #FFE8E0;
+    --gold:         #F2B134;
+    --gold-soft:    #FFF3D6;
+    --good:         #12946F;
+    --good-soft:    #E4F6EF;
+    --danger:       #D6336C;
+    --danger-soft:  #FCE4ED;
+    --shadow-sm:    0 1px 2px rgba(23,21,28,0.06), 0 1px 1px rgba(23,21,28,0.04);
+    --shadow-md:    0 10px 30px rgba(23,21,28,0.08), 0 2px 8px rgba(23,21,28,0.05);
+    --shadow-lg:    0 24px 60px rgba(23,21,28,0.14), 0 6px 18px rgba(23,21,28,0.08);
     font-size: 16px;
   }
 
@@ -65,8 +73,8 @@
   html{ scroll-behavior:smooth; }
   body{
     margin:0;
-    background:var(--asphalt);
-    color:var(--chalk);
+    background:var(--bg);
+    color:var(--ink);
     font-family:'Work Sans', -apple-system, sans-serif;
     line-height:1.5;
   }
@@ -83,7 +91,7 @@
 
   /* focus visibility */
   a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible{
-    outline: 2px solid var(--amber);
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
 
@@ -94,9 +102,9 @@
   /* ---------- header ---------- */
   header{
     position:sticky; top:0; z-index:50;
-    background:rgba(30,27,24,0.92);
-    backdrop-filter: blur(6px);
-    border-bottom:1px solid var(--steel-line);
+    background:rgba(255,255,255,0.86);
+    backdrop-filter: blur(10px);
+    border-bottom:1px solid var(--line);
   }
   .nav{
     display:flex; align-items:center; justify-content:space-between;
@@ -104,40 +112,40 @@
   }
   .brand{ display:flex; align-items:center; gap:12px; }
   .plate{
-    border:2px solid var(--amber);
-    border-radius:4px;
-    padding:3px 8px;
+    background:var(--ink); border-radius:5px;
+    padding:4px 9px;
     font-family:'Rajdhani',sans-serif;
     font-weight:700;
     font-size:0.95rem;
     letter-spacing:0.06em;
-    color:var(--amber);
+    color:var(--gold-soft);
     white-space:nowrap;
   }
-  .brand-name{ font-size:1.15rem; line-height:1.1; }
+  .brand-name{ font-size:1.15rem; line-height:1.1; color:var(--ink); }
   .brand-name small{
     display:block; font-family:'Work Sans',sans-serif; font-weight:400;
-    font-size:0.72rem; color:var(--chalk-dim); letter-spacing:0.02em;
+    font-size:0.72rem; color:var(--ink-dim); letter-spacing:0.02em;
   }
   .nav-links{ display:flex; align-items:center; gap:26px; font-size:0.95rem; }
-  .nav-links a{ text-decoration:none; color:var(--chalk-dim); transition:color .15s; }
-  .nav-links a:hover{ color:var(--amber); }
+  .nav-links a{ text-decoration:none; color:var(--ink-dim); transition:color .15s; }
+  .nav-links a:hover{ color:var(--accent-deep); }
   .call-btn{
     display:inline-flex; align-items:center; gap:8px;
-    background:var(--amber); color:var(--ink);
-    padding:9px 16px; border-radius:3px; text-decoration:none;
+    background:var(--accent); color:#fff;
+    padding:9px 16px; border-radius:24px; text-decoration:none;
     font-weight:600; font-size:0.9rem; white-space:nowrap;
-    transition:transform .12s, background .15s;
+    box-shadow:var(--shadow-sm);
+    transition:transform .12s, background .15s, box-shadow .15s;
   }
-  .call-btn:hover{ background:var(--amber-2); transform:translateY(-1px); }
-  .menu-toggle{ display:none; background:none; border:1px solid var(--steel-line); color:var(--chalk); border-radius:4px; padding:8px 10px; }
+  .call-btn:hover{ background:var(--accent-deep); transform:translateY(-1px); box-shadow:var(--shadow-md); }
+  .menu-toggle{ display:none; background:none; border:1px solid var(--line-strong); color:var(--ink); border-radius:8px; padding:8px 10px; }
 
   @media (max-width:820px){
     .nav-links{
       position:absolute; top:100%; left:0; right:0;
       flex-direction:column; align-items:flex-start;
-      background:var(--asphalt-2); padding:18px 24px; gap:16px;
-      border-bottom:1px solid var(--steel-line);
+      background:var(--surface); padding:18px 24px; gap:16px;
+      border-bottom:1px solid var(--line); box-shadow:var(--shadow-md);
       display:none;
     }
     .nav-links.open{ display:flex; }
@@ -147,10 +155,11 @@
   /* ---------- hero ---------- */
   .hero{
     position:relative; overflow:hidden;
-    border-bottom:1px solid var(--steel-line);
+    border-bottom:1px solid var(--line);
     background:
-      radial-gradient(1100px 500px at 85% -10%, rgba(242,177,52,0.10), transparent 60%),
-      var(--asphalt);
+      radial-gradient(900px 460px at 88% -12%, var(--accent-soft), transparent 60%),
+      radial-gradient(700px 420px at -10% 110%, var(--gold-soft), transparent 55%),
+      var(--bg);
   }
   .hero-grid{
     display:grid; grid-template-columns:1.1fr 0.9fr; gap:48px;
@@ -158,38 +167,40 @@
   }
   .kicker{
     display:inline-flex; align-items:center; gap:10px;
-    color:var(--amber); font-family:'Rajdhani',sans-serif;
-    font-weight:600; font-size:1rem; letter-spacing:0.04em; margin-bottom:18px;
+    color:var(--accent-deep); font-family:'Rajdhani',sans-serif;
+    font-weight:700; font-size:1rem; letter-spacing:0.06em; margin-bottom:18px;
+    text-transform:uppercase;
   }
-  .kicker .dash{ width:28px; height:2px; background:var(--amber); display:inline-block; }
+  .kicker .dash{ width:28px; height:2px; background:var(--accent); display:inline-block; }
   h1.headline{
     font-size:clamp(2.3rem, 4.2vw, 3.6rem);
     line-height:1.04;
-    color:var(--chalk);
+    color:var(--ink);
   }
-  h1.headline em{ font-style:normal; color:var(--amber); }
+  h1.headline em{ font-style:normal; color:var(--accent); }
   .hero p.lede{
-    margin-top:22px; max-width:46ch; color:var(--chalk-dim);
+    margin-top:22px; max-width:46ch; color:var(--ink-dim);
     font-size:1.08rem;
   }
   .hero-ctas{ display:flex; gap:14px; margin-top:32px; flex-wrap:wrap; }
   .btn-primary{
-    background:var(--amber); color:var(--ink); border:none;
-    padding:14px 24px; border-radius:3px; font-weight:700; font-size:0.98rem;
+    background:var(--accent); color:#fff; border:none;
+    padding:14px 24px; border-radius:10px; font-weight:700; font-size:0.98rem;
     text-decoration:none; display:inline-block;
-    transition:transform .12s, background .15s;
+    box-shadow:var(--shadow-sm);
+    transition:transform .12s, background .15s, box-shadow .15s;
   }
-  .btn-primary:hover{ background:var(--amber-2); transform:translateY(-1px); }
+  .btn-primary:hover{ background:var(--accent-deep); transform:translateY(-1px); box-shadow:var(--shadow-md); }
   .btn-ghost{
-    border:1px solid var(--steel-line); color:var(--chalk);
-    padding:14px 24px; border-radius:3px; font-weight:600; font-size:0.98rem;
-    text-decoration:none; display:inline-block; transition:border-color .15s;
+    border:1px solid var(--line-strong); color:var(--ink); background:var(--surface);
+    padding:14px 24px; border-radius:10px; font-weight:600; font-size:0.98rem;
+    text-decoration:none; display:inline-block; transition:border-color .15s, box-shadow .15s;
   }
-  .btn-ghost:hover{ border-color:var(--amber); }
+  .btn-ghost:hover{ border-color:var(--accent); box-shadow:var(--shadow-sm); }
 
   .stat-strip{ display:flex; gap:34px; margin-top:44px; flex-wrap:wrap; }
-  .stat b{ display:block; font-family:'Rajdhani',sans-serif; font-size:1.9rem; color:var(--amber); }
-  .stat span{ font-size:0.82rem; color:var(--chalk-dim); }
+  .stat b{ display:block; font-family:'Rajdhani',sans-serif; font-size:1.9rem; color:var(--accent-deep); }
+  .stat span{ font-size:0.82rem; color:var(--ink-dim); }
 
   /* road illustration */
   .road-art{ position:relative; height:340px; }
@@ -205,200 +216,186 @@
   /* ---------- section shells ---------- */
   section{ padding:72px 0; }
   .section-head{ max-width:640px; margin-bottom:40px; }
-  .eyebrow{ color:var(--amber); font-family:'Rajdhani',sans-serif; font-weight:600; font-size:0.95rem; margin-bottom:10px; letter-spacing:0.03em; }
+  .eyebrow{ color:var(--accent-deep); font-family:'Rajdhani',sans-serif; font-weight:700; font-size:0.95rem; margin-bottom:10px; letter-spacing:0.05em; text-transform:uppercase; }
   .section-head h2{ font-size:clamp(1.7rem,3vw,2.3rem); }
-  .section-head p{ color:var(--chalk-dim); margin-top:12px; }
+  .section-head p{ color:var(--ink-dim); margin-top:12px; }
 
-  #inventory{ background:var(--asphalt-2); border-top:1px solid var(--steel-line); border-bottom:1px solid var(--steel-line); }
-
-  /* brand chip strip */
-  .brand-strip{ display:flex; flex-wrap:wrap; gap:9px; margin-bottom:22px; }
-  .brand-chip{
-    display:inline-flex; align-items:center; gap:8px;
-    background:var(--asphalt); border:1px solid var(--steel-line); color:var(--chalk-dim);
-    border-radius:20px; padding:7px 14px 7px 8px; font-size:0.84rem; font-weight:500;
-    transition:border-color .15s, color .15s, background .15s;
-  }
-  .brand-chip .mark{
-    width:22px; height:22px; border-radius:50%; background:var(--asphalt-3);
-    color:var(--chalk); font-family:'Rajdhani',sans-serif; font-weight:700; font-size:0.72rem;
-    display:flex; align-items:center; justify-content:center; flex:none;
-  }
-  .brand-chip:hover{ border-color:rgba(242,177,52,0.5); color:var(--chalk); }
-  .brand-chip.active{ background:var(--amber); border-color:var(--amber); color:var(--ink); }
-  .brand-chip.active .mark{ background:rgba(30,27,24,0.18); color:var(--ink); }
+  #inventory{ background:var(--bg-soft); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
 
   /* filter bar */
   .filter-bar{
     display:flex; flex-wrap:wrap; gap:12px; align-items:center;
-    margin-bottom:32px; padding:16px; background:var(--asphalt);
-    border:1px solid var(--steel-line); border-radius:6px;
+    margin-bottom:32px; padding:16px; background:var(--surface);
+    border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow-sm);
   }
-  .filter-bar label{ font-size:0.78rem; color:var(--chalk-dim); display:block; margin-bottom:4px; }
+  .filter-bar label{ font-size:0.78rem; color:var(--ink-dim); display:block; margin-bottom:4px; }
   .filter-bar select, .filter-bar input[type=text]{
-    background:var(--asphalt-3); color:var(--chalk); border:1px solid var(--steel-line);
-    border-radius:4px; padding:8px 10px; font-size:0.9rem; min-width:140px;
+    background:var(--bg-soft); color:var(--ink); border:1px solid var(--line-strong);
+    border-radius:8px; padding:8px 10px; font-size:0.9rem; min-width:140px;
   }
-  .filter-count{ margin-left:auto; color:var(--chalk-dim); font-size:0.85rem; }
+  .filter-count{ margin-left:auto; color:var(--ink-dim); font-size:0.85rem; }
 
   .car-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
   @media (max-width:980px){ .car-grid{ grid-template-columns:repeat(2,1fr); } }
   @media (max-width:640px){ .car-grid{ grid-template-columns:1fr; } }
 
   .car-card{
-    background:var(--asphalt); border:1px solid var(--steel-line); border-radius:8px;
+    background:var(--surface); border:1px solid var(--line); border-radius:16px;
     overflow:hidden; display:flex; flex-direction:column;
-    transition:border-color .15s, transform .15s;
+    box-shadow:var(--shadow-sm);
+    transition:border-color .15s, transform .15s, box-shadow .15s;
   }
-  .car-card:hover{ border-color:rgba(242,177,52,0.5); transform:translateY(-3px); }
-  .car-photo{ position:relative; aspect-ratio:4/3; background:var(--asphalt-3); overflow:hidden; }
+  .car-card:hover{ border-color:var(--accent); transform:translateY(-4px); box-shadow:var(--shadow-lg); }
+  .car-photo{ position:relative; aspect-ratio:4/3; background:var(--bg-soft); overflow:hidden; }
   .car-photo img{ width:100%; height:100%; object-fit:cover; }
-  .car-card.is-sold .car-photo img{ filter:grayscale(0.6) brightness(0.6); }
+  .car-card.is-sold .car-photo img{ filter:grayscale(0.6) brightness(0.85); }
   .gallery-nav{
     position:absolute; top:50%; transform:translateY(-50%);
     width:30px; height:30px; border-radius:50%; border:none;
-    background:rgba(30,27,24,0.65); color:var(--chalk); font-size:1rem;
+    background:rgba(23,21,28,0.55); color:#fff; font-size:1rem;
     display:flex; align-items:center; justify-content:center; z-index:2;
   }
-  .gallery-nav:hover{ background:rgba(30,27,24,0.9); }
+  .gallery-nav:hover{ background:rgba(23,21,28,0.8); }
   .gallery-prev{ left:8px; } .gallery-next{ right:8px; }
   .gallery-dots{ position:absolute; bottom:8px; left:0; right:0; display:flex; justify-content:center; gap:5px; z-index:2; }
-  .gallery-dots span{ width:6px; height:6px; border-radius:50%; background:rgba(237,230,216,0.4); }
-  .gallery-dots span.active{ background:var(--amber); }
+  .gallery-dots span{ width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,0.55); }
+  .gallery-dots span.active{ background:var(--accent); }
   .sold-ribbon{
     position:absolute; top:14px; right:-32px; z-index:3;
-    background:var(--taillight); color:#fff; font-family:'Rajdhani',sans-serif;
+    background:var(--danger); color:#fff; font-family:'Rajdhani',sans-serif;
     font-weight:700; font-size:0.85rem; letter-spacing:0.08em;
-    padding:5px 40px; transform:rotate(35deg); box-shadow:0 2px 6px rgba(0,0,0,0.4);
+    padding:5px 40px; transform:rotate(35deg); box-shadow:0 2px 6px rgba(0,0,0,0.25);
   }
   .badge{
     position:absolute; top:10px; left:10px;
-    background:rgba(30,27,24,0.85); border:1px solid var(--steel-line);
-    color:var(--chalk); font-size:0.72rem; font-weight:600;
-    padding:4px 9px; border-radius:3px; letter-spacing:0.02em;
+    background:rgba(255,255,255,0.92); border:1px solid var(--line);
+    color:var(--ink); font-size:0.72rem; font-weight:700;
+    padding:4px 9px; border-radius:20px; letter-spacing:0.02em;
+    box-shadow:var(--shadow-sm);
   }
-  .badge.sample{ border-color:var(--taillight); color:var(--amber-2); }
-  .badge.condition-Excellent{ border-color:var(--good); color:var(--good); }
-  .badge.condition-Good{ border-color:var(--amber); color:var(--amber); }
-  .badge.condition-Fair{ border-color:var(--taillight); color:#e59089; }
-
-  .photo-preview-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:10px; }
-  .photo-preview-grid .thumb{ position:relative; aspect-ratio:1; border-radius:4px; overflow:hidden; border:1px solid var(--steel-line); }
-  .photo-preview-grid .thumb img{ width:100%; height:100%; object-fit:cover; }
-  .photo-preview-grid .thumb button{
-    position:absolute; top:2px; right:2px; width:18px; height:18px; border-radius:50%;
-    background:rgba(30,27,24,0.85); color:var(--chalk); border:none; font-size:0.7rem; line-height:1; padding:0;
-  }
-  .photo-count-hint{ font-size:0.76rem; color:var(--chalk-dim); margin-top:6px; }
+  .badge.sample{ background:var(--gold-soft); border-color:transparent; color:#8A5A00; }
+  .badge.condition-Excellent{ background:var(--good-soft); border-color:transparent; color:var(--good); }
+  .badge.condition-Good{ background:var(--gold-soft); border-color:transparent; color:#8A5A00; }
+  .badge.condition-Fair{ background:var(--danger-soft); border-color:transparent; color:var(--danger); }
 
   .car-body{ padding:18px 18px 20px; display:flex; flex-direction:column; gap:10px; flex:1; }
-  .car-title{ font-size:1.15rem; }
-  .car-model{ color:var(--chalk-dim); font-size:0.85rem; margin-top:2px; }
-  .car-price{ font-family:'Rajdhani',sans-serif; font-weight:700; font-size:1.5rem; color:var(--amber); }
-  .spec-row{ display:grid; grid-template-columns:1fr 1fr; gap:8px 12px; font-size:0.83rem; color:var(--chalk-dim); border-top:1px solid var(--steel-line); padding-top:12px; }
-  .spec-row div b{ display:block; color:var(--chalk); font-weight:600; font-size:0.88rem; }
+  .car-title{ font-size:1.15rem; color:var(--ink); }
+  .car-model{ color:var(--ink-dim); font-size:0.85rem; margin-top:2px; }
+  .car-price{ font-family:'Rajdhani',sans-serif; font-weight:700; font-size:1.5rem; color:var(--accent-deep); }
+  .spec-row{ display:grid; grid-template-columns:1fr 1fr; gap:8px 12px; font-size:0.83rem; color:var(--ink-dim); border-top:1px solid var(--line); padding-top:12px; }
+  .spec-row div b{ display:block; color:var(--ink); font-weight:600; font-size:0.88rem; }
   .car-actions{ display:flex; gap:10px; margin-top:auto; padding-top:6px; }
   .car-actions a{
-    flex:1; text-align:center; padding:10px; border-radius:4px; font-size:0.85rem; font-weight:600;
-    text-decoration:none; transition:background .15s, border-color .15s;
+    flex:1; text-align:center; padding:10px; border-radius:8px; font-size:0.85rem; font-weight:700;
+    text-decoration:none; transition:background .15s, border-color .15s, box-shadow .15s;
   }
-  .car-actions .call{ background:var(--amber); color:var(--ink); }
-  .car-actions .call:hover{ background:var(--amber-2); }
-  .car-actions .whatsapp{ border:1px solid var(--steel-line); color:var(--chalk); }
-  .car-actions .whatsapp:hover{ border-color:var(--amber); }
+  .car-actions .call{ background:var(--accent); color:#fff; box-shadow:var(--shadow-sm); }
+  .car-actions .call:hover{ background:var(--accent-deep); }
+  .car-actions .whatsapp{ border:1px solid var(--line-strong); color:var(--ink); }
+  .car-actions .whatsapp:hover{ border-color:var(--accent); }
 
   .empty-state{
-    grid-column:1/-1; text-align:center; padding:60px 20px; color:var(--chalk-dim);
-    border:1px dashed var(--steel-line); border-radius:8px;
+    grid-column:1/-1; text-align:center; padding:60px 20px; color:var(--ink-dim);
+    border:1px dashed var(--line-strong); border-radius:14px; background:var(--surface);
   }
 
   /* ---------- about ---------- */
   .about-grid{ display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; }
   @media (max-width:820px){ .about-grid{ grid-template-columns:1fr; } }
   .owner-card{
-    background:var(--asphalt-2); border:1px solid var(--steel-line); border-radius:8px;
+    background:var(--surface); border:1px solid var(--line); border-radius:14px;
     padding:26px; display:flex; gap:16px; align-items:flex-start; margin-top:26px;
+    box-shadow:var(--shadow-sm);
   }
   .owner-mark{
-    width:52px; height:52px; border-radius:50%; background:var(--amber); color:var(--ink);
+    width:52px; height:52px; border-radius:50%; background:var(--accent); color:#fff;
     display:flex; align-items:center; justify-content:center; font-family:'Rajdhani',sans-serif;
     font-weight:700; font-size:1.3rem; flex:none;
   }
-  .owner-card h3{ font-size:1.05rem; }
-  .owner-card p{ color:var(--chalk-dim); font-size:0.9rem; margin-top:4px; }
-  .timeline{ margin-top:8px; color:var(--chalk-dim); }
+  .owner-card h3{ font-size:1.05rem; color:var(--ink); }
+  .owner-card p{ color:var(--ink-dim); font-size:0.9rem; margin-top:4px; }
+  .timeline{ margin-top:8px; color:var(--ink-dim); }
   .timeline p{ margin:0 0 14px; }
 
   /* ---------- contact ---------- */
-  #contact{ background:var(--asphalt-2); border-top:1px solid var(--steel-line); }
+  #contact{ background:var(--bg-soft); border-top:1px solid var(--line); }
   .contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:40px; }
   @media (max-width:820px){ .contact-grid{ grid-template-columns:1fr; } }
   .contact-list{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:20px; }
   .contact-list li{ display:flex; gap:14px; }
-  .c-icon{ width:38px; height:38px; border:1px solid var(--steel-line); border-radius:6px; display:flex; align-items:center; justify-content:center; flex:none; color:var(--amber); }
-  .contact-list h3{ font-size:1rem; }
-  .contact-list p{ color:var(--chalk-dim); font-size:0.92rem; margin:2px 0 0; }
+  .c-icon{ width:38px; height:38px; background:var(--surface); border:1px solid var(--line); border-radius:10px; display:flex; align-items:center; justify-content:center; flex:none; color:var(--accent-deep); box-shadow:var(--shadow-sm); }
+  .contact-list h3{ font-size:1rem; color:var(--ink); }
+  .contact-list p{ color:var(--ink-dim); font-size:0.92rem; margin:2px 0 0; }
   .contact-list a{ text-decoration:none; }
-  .contact-list a:hover{ color:var(--amber); }
-  .map-frame{ border:1px solid var(--steel-line); border-radius:8px; overflow:hidden; min-height:280px; }
+  .contact-list a:hover{ color:var(--accent-deep); }
+  .map-frame{ border:1px solid var(--line); border-radius:14px; overflow:hidden; min-height:280px; box-shadow:var(--shadow-sm); }
   .map-frame iframe{ width:100%; height:100%; min-height:280px; border:0; display:block; }
 
   /* ---------- footer ---------- */
-  footer{ padding:32px 0; border-top:1px solid var(--steel-line); }
-  .footer-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; color:var(--chalk-dim); font-size:0.83rem; }
-  .footer-row a{ text-decoration:none; color:var(--chalk-dim); }
-  .footer-row a:hover{ color:var(--amber); }
+  footer{ padding:32px 0; border-top:1px solid var(--line); background:var(--bg-soft); }
+  .footer-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; color:var(--ink-dim); font-size:0.83rem; }
+  .footer-row a{ text-decoration:none; color:var(--ink-dim); }
+  .footer-row a:hover{ color:var(--accent-deep); }
 
   /* ---------- admin ---------- */
   #admin{ display:none; }
   #admin.open{ display:block; }
-  .admin-shell{ background:var(--asphalt-2); border-top:1px solid var(--steel-line); }
+  .admin-shell{ background:var(--bg-soft); border-top:1px solid var(--line); }
   .admin-gate{ max-width:360px; margin:0 auto; text-align:center; }
   .admin-gate input{
-    width:100%; margin-top:16px; padding:12px; border-radius:4px; border:1px solid var(--steel-line);
-    background:var(--asphalt); color:var(--chalk); font-size:1rem;
+    width:100%; margin-top:16px; padding:12px; border-radius:8px; border:1px solid var(--line-strong);
+    background:var(--surface); color:var(--ink); font-size:1rem;
   }
   .admin-gate button{ margin-top:14px; }
-  .admin-error{ color:var(--taillight); font-size:0.85rem; margin-top:10px; min-height:1.2em; }
+  .admin-error{ color:var(--danger); font-size:0.85rem; margin-top:10px; min-height:1.2em; }
 
   .admin-layout{ display:grid; grid-template-columns:380px 1fr; gap:36px; align-items:flex-start; }
   @media (max-width:900px){ .admin-layout{ grid-template-columns:1fr; } }
-  .form-card{ background:var(--asphalt); border:1px solid var(--steel-line); border-radius:8px; padding:24px; }
-  .form-card h3{ margin-bottom:16px; }
+  .form-card{ background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:24px; box-shadow:var(--shadow-sm); }
+  .form-card h3{ margin-bottom:16px; color:var(--ink); }
   .field{ margin-bottom:14px; }
-  .field label{ display:block; font-size:0.8rem; color:var(--chalk-dim); margin-bottom:6px; }
+  .field label{ display:block; font-size:0.8rem; color:var(--ink-dim); margin-bottom:6px; }
   .field input, .field select{
-    width:100%; padding:10px; border-radius:4px; border:1px solid var(--steel-line);
-    background:var(--asphalt-3); color:var(--chalk); font-size:0.92rem; font-family:inherit;
+    width:100%; padding:10px; border-radius:8px; border:1px solid var(--line-strong);
+    background:var(--bg-soft); color:var(--ink); font-size:0.92rem; font-family:inherit;
   }
   .field input[type=file]{ padding:8px; font-size:0.82rem; }
   .field input[type=file]::file-selector-button{
-    background:var(--amber); color:var(--ink); border:none; border-radius:3px;
+    background:var(--accent); color:#fff; border:none; border-radius:6px;
     padding:6px 12px; font-weight:600; font-size:0.8rem; margin-right:10px; cursor:pointer;
   }
   .field-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
   .form-status{ font-size:0.85rem; margin-top:10px; min-height:1.2em; }
   .form-status.ok{ color:var(--good); }
-  .form-status.err{ color:var(--taillight); }
+  .form-status.err{ color:var(--danger); }
+
+  .photo-preview-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:10px; }
+  .photo-preview-grid .thumb{ position:relative; aspect-ratio:1; border-radius:8px; overflow:hidden; border:1px solid var(--line); }
+  .photo-preview-grid .thumb img{ width:100%; height:100%; object-fit:cover; }
+  .photo-preview-grid .thumb button{
+    position:absolute; top:2px; right:2px; width:18px; height:18px; border-radius:50%;
+    background:rgba(23,21,28,0.75); color:#fff; border:none; font-size:0.7rem; line-height:1; padding:0;
+  }
+  .photo-count-hint{ font-size:0.76rem; color:var(--ink-dim); margin-top:6px; }
 
   .admin-list{ display:flex; flex-direction:column; gap:12px; }
   .admin-row{
-    display:flex; gap:14px; align-items:center; background:var(--asphalt);
-    border:1px solid var(--steel-line); border-radius:6px; padding:12px;
+    display:flex; gap:14px; align-items:center; background:var(--surface);
+    border:1px solid var(--line); border-radius:12px; padding:12px; box-shadow:var(--shadow-sm);
   }
-  .admin-row img{ width:64px; height:48px; object-fit:cover; border-radius:4px; background:var(--asphalt-3); flex:none; }
+  .admin-row img{ width:64px; height:48px; object-fit:cover; border-radius:8px; background:var(--bg-soft); flex:none; }
   .admin-row .info{ flex:1; min-width:0; }
-  .admin-row .info b{ display:block; font-size:0.92rem; }
-  .admin-row .info span{ font-size:0.78rem; color:var(--chalk-dim); }
-  .admin-row .del{ background:none; border:1px solid var(--steel-line); color:var(--taillight); border-radius:4px; padding:7px 12px; font-size:0.8rem; }
-  .admin-row .del:hover{ border-color:var(--taillight); }
-  .admin-row .toggle-status{ background:none; border:1px solid var(--steel-line); color:var(--chalk); border-radius:4px; padding:7px 12px; font-size:0.8rem; white-space:nowrap; }
-  .admin-row .toggle-status:hover{ border-color:var(--amber); }
-  .status-pill{ display:inline-block; font-size:0.72rem; font-weight:600; padding:2px 8px; border-radius:10px; margin-top:2px; }
-  .status-pill.available{ background:rgba(127,160,115,0.15); color:var(--good); }
-  .status-pill.sold{ background:rgba(193,68,60,0.18); color:#e59089; }
-  .admin-hint{ font-size:0.8rem; color:var(--chalk-dim); margin-top:10px; }
-  .logout-link{ display:inline-block; margin-top:18px; font-size:0.85rem; color:var(--chalk-dim); text-decoration:underline; background:none; border:none; }
+  .admin-row .info b{ display:block; font-size:0.92rem; color:var(--ink); }
+  .admin-row .info span{ font-size:0.78rem; color:var(--ink-dim); }
+  .admin-row .del{ background:none; border:1px solid var(--line-strong); color:var(--danger); border-radius:8px; padding:7px 12px; font-size:0.8rem; }
+  .admin-row .del:hover{ border-color:var(--danger); background:var(--danger-soft); }
+  .admin-row .toggle-status{ background:none; border:1px solid var(--line-strong); color:var(--ink); border-radius:8px; padding:7px 12px; font-size:0.8rem; white-space:nowrap; }
+  .admin-row .toggle-status:hover{ border-color:var(--accent); background:var(--accent-soft); }
+  .status-pill{ display:inline-block; font-size:0.72rem; font-weight:700; padding:2px 10px; border-radius:12px; margin-top:2px; }
+  .status-pill.available{ background:var(--good-soft); color:var(--good); }
+  .status-pill.sold{ background:var(--danger-soft); color:var(--danger); }
+  .admin-hint{ font-size:0.8rem; color:var(--ink-dim); margin-top:10px; }
+  .logout-link{ display:inline-block; margin-top:18px; font-size:0.85rem; color:var(--ink-dim); text-decoration:underline; background:none; border:none; }
 </style>
 </head>
 <body>
@@ -526,8 +523,6 @@
       <p>Every vehicle listed here has been through Ramdev's own inspection. Tap a car to call or message about it directly.</p>
     </div>
 
-    <div class="brand-strip" id="brandStrip"></div>
-
     <div class="filter-bar">
       <div>
         <label for="fStatus">Status</label>
@@ -536,6 +531,10 @@
           <option value="available">Available only</option>
           <option value="sold">Sold</option>
         </select>
+      </div>
+      <div>
+        <label for="fBrand">Brand</label>
+        <select id="fBrand"><option value="">All</option></select>
       </div>
       <div>
         <label for="fFuel">Fuel</label>
@@ -655,9 +654,15 @@
             <input id="iPhoto" type="file" accept="image/*" multiple>
             <div id="iPhotoPreviews" class="photo-preview-grid"></div>
           </div>
-          <div class="field">
-            <label for="iBrand">Company / brand</label>
-            <select id="iBrand"></select>
+          <div class="field-row">
+            <div class="field">
+              <label for="iBrand">Company / brand</label>
+              <select id="iBrand"></select>
+            </div>
+            <div class="field">
+              <label for="iCategory">Body type</label>
+              <select id="iCategory"></select>
+            </div>
           </div>
           <div class="field-row">
             <div class="field"><label for="iName">Car name</label><input id="iName" type="text" placeholder="Maruti Swift"></div>
@@ -728,6 +733,7 @@ menuToggle.addEventListener('click', () => {
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyAAE6eFTEoO-Na8qe_6VvMk0RuCyOzO-Ec",
   authDomain: "manish-car-selling-project.firebaseapp.com",
+  databaseURL: "https://manish-car-selling-project-default-rtdb.firebaseio.com",
   projectId: "manish-car-selling-project",
   storageBucket: "manish-car-selling-project.firebasestorage.app",
   messagingSenderId: "545270826466",
@@ -745,11 +751,37 @@ if (firebaseReady) {
   db = firebase.firestore();
 }
 
+/* Turns a raw Firestore/Firebase error into a specific, actionable message
+   instead of one generic "check your rules and connection" line, so the
+   dealer portal tells you exactly what to go fix. */
+function explainFirebaseError(e){
+  const code = e && e.code;
+  console.error('Firestore error:', code, e && e.message, e);
+  switch (code) {
+    case 'permission-denied':
+      return "Firestore rejected this — your Firestore security rules don't allow writes yet. Open Firebase Console → Firestore Database → Rules and publish the rules block from the setup notes at the top of this file, then try again.";
+    case 'unauthenticated':
+      return "Firestore rejected this because no one is signed in. If you've added an auth requirement to your rules, either sign in first or relax the rules to match this site's setup notes.";
+    case 'not-found':
+      return "Firestore couldn't find this project's database. In Firebase Console, open Firestore Database and click 'Create database' if you haven't already — it doesn't turn on by itself.";
+    case 'unavailable':
+    case 'deadline-exceeded':
+      return "Couldn't reach Firebase — check your internet connection (or a browser extension/ad-blocker may be blocking Google APIs) and try again.";
+    case 'invalid-argument':
+      return "Firestore rejected the data — one field may be an unsupported type or a photo is still too large. Try removing a photo and saving again.";
+    case 'resource-exhausted':
+      return "Firestore's free-tier quota looks like it's been hit for today. Check Usage in the Firebase Console, or try again after it resets.";
+    default:
+      if (!firebaseReady) return "Firebase isn't connected yet — see the setup notes at the top of this file's source.";
+      return `Could not save — Firebase said: "${(e && e.message) || 'unknown error'}". Double-check your FIREBASE_CONFIG values and that Firestore is enabled with rules published.`;
+  }
+}
+
 /* ---------------- sample data (shown only when Firebase IS connected but no real car has been added yet) ---------------- */
 const SAMPLE_CARS = [
-  { id:'s1', sample:true, photos:[], brand:'Maruti Suzuki', name:'Maruti Swift', model:'VXI · 2019', ownerNum:'1st owner', vehicleNo:'RJ27 CA 4410', km:'42,000', rate:'385000', condition:'Excellent', fuel:'Petrol', status:'available' },
-  { id:'s2', sample:true, photos:[], brand:'Hyundai', name:'Hyundai i20', model:'Sportz · 2017', ownerNum:'2nd owner', vehicleNo:'RJ27 CB 7712', km:'61,500', rate:'420000', condition:'Good', fuel:'Petrol', status:'available' },
-  { id:'s3', sample:true, photos:[], brand:'Mahindra', name:'Mahindra Bolero', model:'SLE · 2016', ownerNum:'1st owner', vehicleNo:'RJ27 CC 2098', km:'78,200', rate:'465000', condition:'Fair', fuel:'Diesel', status:'sold' }
+  { id:'s1', sample:true, photos:[], brand:'Maruti Suzuki', category:'Hatchback', name:'Maruti Swift', model:'VXI · 2019', ownerNum:'1st owner', vehicleNo:'RJ27 CA 4410', km:'42,000', rate:'385000', condition:'Excellent', fuel:'Petrol', status:'available' },
+  { id:'s2', sample:true, photos:[], brand:'Hyundai', category:'Hatchback', name:'Hyundai i20', model:'Sportz · 2017', ownerNum:'2nd owner', vehicleNo:'RJ27 CB 7712', km:'61,500', rate:'420000', condition:'Good', fuel:'Petrol', status:'available' },
+  { id:'s3', sample:true, photos:[], brand:'Mahindra', category:'SUV', name:'Mahindra Bolero', model:'SLE · 2016', ownerNum:'1st owner', vehicleNo:'RJ27 CC 2098', km:'78,200', rate:'465000', condition:'Fair', fuel:'Diesel', status:'sold' }
 ];
 
 /* ---------------------------------------------------------------------------
@@ -764,8 +796,8 @@ const SAMPLE_CARS = [
 --------------------------------------------------------------------------- */
 const LOCAL_KEY = 'ramdevAutoConsultCars';
 const LOCAL_SEED_CARS = [
-  { id:'local-1', photos:[], brand:'Maruti Suzuki', name:'Maruti Swift', model:'VXI · 2019', ownerNum:'1st owner', vehicleNo:'RJ27 CA 4410', km:'42,000', rate:'385000', condition:'Excellent', fuel:'Petrol', status:'available' },
-  { id:'local-2', photos:[], brand:'Hyundai', name:'Hyundai i20', model:'Sportz · 2017', ownerNum:'2nd owner', vehicleNo:'RJ27 CB 7712', km:'61,500', rate:'420000', condition:'Good', fuel:'Petrol', status:'available' }
+  { id:'local-1', photos:[], brand:'Maruti Suzuki', category:'Hatchback', name:'Maruti Swift', model:'VXI · 2019', ownerNum:'1st owner', vehicleNo:'RJ27 CA 4410', km:'42,000', rate:'385000', condition:'Excellent', fuel:'Petrol', status:'available' },
+  { id:'local-2', photos:[], brand:'Hyundai', category:'Hatchback', name:'Hyundai i20', model:'Sportz · 2017', ownerNum:'2nd owner', vehicleNo:'RJ27 CB 7712', km:'61,500', rate:'420000', condition:'Good', fuel:'Petrol', status:'available' }
 ];
 
 function loadLocalCars(){
@@ -841,6 +873,7 @@ function carCardHTML(car){
           <div><b>${car.fuel}</b>Fuel</div>
           <div><b>${car.ownerNum}</b>Ownership</div>
           <div><b>${car.vehicleNo}</b>Vehicle no.</div>
+          ${car.category ? `<div><b>${car.category}</b>Body type</div>` : ''}
         </div>
         ${actions}
       </div>
@@ -865,46 +898,34 @@ document.getElementById('carGrid').addEventListener('click', (e) => {
 
 const FUEL_TYPES = ['Petrol','Diesel','CNG','Electric'];
 const CONDITIONS = ['Excellent','Good','Fair'];
+const CATEGORIES = ['Hatchback','Sedan','SUV','MUV / MPV','Pickup Truck','Convertible','Luxury','Van / Commercial'];
 const BRANDS = [
   'Maruti Suzuki','Hyundai','Tata Motors','Mahindra','Honda','Toyota','Kia',
   'Renault','Nissan','Ford','Volkswagen','Skoda','MG Motor','Chevrolet',
   'Datsun','Jeep','BMW','Mercedes-Benz','Audi','Other'
 ];
 
-let selectedBrand = '';
-
-function brandInitials(name){
-  return name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-}
-
-function renderBrandStrip(){
-  const strip = document.getElementById('brandStrip');
-  const chips = [{ label:'All brands', value:'' }, ...BRANDS.map(b => ({ label:b, value:b }))];
-  strip.innerHTML = chips.map(c => `
-    <button type="button" class="brand-chip${selectedBrand===c.value ? ' active':''}" data-brand="${c.value}">
-      ${c.value ? `<span class="mark">${brandInitials(c.value)}</span>` : ''}${c.label}
-    </button>`).join('');
-  strip.querySelectorAll('.brand-chip').forEach(btn =>
-    btn.addEventListener('click', () => {
-      selectedBrand = btn.dataset.brand;
-      renderBrandStrip();
-      applyFiltersAndRender();
-    })
-  );
-}
-renderBrandStrip();
-
 function populateFilterOptions(){
   const fuelSel = document.getElementById('fFuel');
   const condSel = document.getElementById('fCondition');
+  const brandFilterSel = document.getElementById('fBrand');
   const brandSel = document.getElementById('iBrand');
+  const iCatSel = document.getElementById('iCategory');
   // Fixed lists so every category (including CNG and Electric) is always
   // selectable, even before any car of that type has been listed yet.
   fuelSel.innerHTML = '<option value="">All fuel types</option>' + FUEL_TYPES.map(f=>`<option value="${f}">${f}</option>`).join('');
   condSel.innerHTML = '<option value="">All conditions</option>' + CONDITIONS.map(c=>`<option value="${c}">${c}</option>`).join('');
+  if (brandFilterSel && !brandFilterSel.dataset.filled) {
+    brandFilterSel.innerHTML = '<option value="">All brands</option>' + BRANDS.map(b=>`<option value="${b}">${b}</option>`).join('');
+    brandFilterSel.dataset.filled = 'true';
+  }
   if (brandSel && !brandSel.dataset.filled) {
     brandSel.innerHTML = BRANDS.map(b=>`<option value="${b}">${b}</option>`).join('');
     brandSel.dataset.filled = 'true';
+  }
+  if (iCatSel && !iCatSel.dataset.filled) {
+    iCatSel.innerHTML = CATEGORIES.map(c=>`<option value="${c}">${c}</option>`).join('');
+    iCatSel.dataset.filled = 'true';
   }
 }
 
@@ -912,13 +933,14 @@ function applyFiltersAndRender(){
   const statusFilter = document.getElementById('fStatus').value;
   const fuel = document.getElementById('fFuel').value;
   const condition = document.getElementById('fCondition').value;
+  const brand = document.getElementById('fBrand').value;
   const sort = document.getElementById('fSort').value;
 
   let list = allCars.filter(c =>
     (!fuel || c.fuel === fuel) &&
     (!condition || c.condition === condition) &&
     (!statusFilter || (c.status || 'available') === statusFilter) &&
-    (!selectedBrand || c.brand === selectedBrand)
+    (!brand || c.brand === brand)
   );
 
   const numRate = c => Number(String(c.rate).replace(/[^0-9]/g,'')) || 0;
@@ -932,10 +954,10 @@ function applyFiltersAndRender(){
   document.getElementById('filterCount').textContent = list.length ? `${list.length} vehicle${list.length===1?'':'s'}` : '';
   grid.innerHTML = list.length
     ? list.map(carCardHTML).join('')
-    : `<div class="empty-state">No ${selectedBrand ? selectedBrand + ' ' : ''}vehicles match those filters right now — call 88245 19595 and we'll check the yard for you.</div>`;
+    : `<div class="empty-state">No ${brand ? brand + ' ' : ''}vehicles match those filters right now — call 88245 19595 and we'll check the yard for you.</div>`;
 }
 
-['fStatus','fFuel','fCondition','fSort'].forEach(id =>
+['fStatus','fFuel','fCondition','fBrand','fSort'].forEach(id =>
   document.getElementById(id).addEventListener('change', applyFiltersAndRender)
 );
 
@@ -956,7 +978,7 @@ function loadInventory(){
     applyFiltersAndRender();
     if (adminUnlocked) renderAdminList();
   }, err => {
-    console.error('Firestore read failed:', err);
+    explainFirebaseError(err); // logs a specific reason to the console
     allCars = SAMPLE_CARS;
     populateFilterOptions();
     applyFiltersAndRender();
@@ -1051,8 +1073,7 @@ async function toggleSoldStatus(id, current){
   try {
     await db.collection('cars').doc(id).update({ status: next });
   } catch (e) {
-    console.error(e);
-    alert('Could not update status — check your connection.');
+    alert(explainFirebaseError(e));
   }
 }
 
@@ -1141,6 +1162,7 @@ function readForm(){
   return {
     photos: currentPhotos.slice(),
     brand: document.getElementById('iBrand').value,
+    category: document.getElementById('iCategory').value,
     name: document.getElementById('iName').value.trim(),
     model: document.getElementById('iModel').value.trim(),
     ownerNum: document.getElementById('iOwnerNum').value.trim(),
@@ -1159,6 +1181,7 @@ function clearForm(){
   currentPhotos = [];
   renderPhotoPreviews();
   document.getElementById('iBrand').value = BRANDS[0];
+  document.getElementById('iCategory').value = CATEGORIES[0];
   document.getElementById('iStatus').value = 'available';
   document.getElementById('editId').value = '';
   document.getElementById('formTitle').textContent = 'Add a car';
@@ -1209,9 +1232,8 @@ document.getElementById('saveCar').addEventListener('click', async () => {
     status.className = 'form-status ok';
     clearForm();
   } catch (e) {
-    console.error(e);
     status.className = 'form-status err';
-    status.textContent = 'Could not save — check your Firestore rules and connection.';
+    status.textContent = explainFirebaseError(e);
   }
 });
 
@@ -1223,6 +1245,8 @@ function editCar(id){
   renderPhotoPreviews();
   document.getElementById('iName').value = car.name || '';
   document.getElementById('iModel').value = car.model || '';
+  document.getElementById('iBrand').value = car.brand || BRANDS[0];
+  document.getElementById('iCategory').value = car.category || CATEGORIES[0];
   document.getElementById('iOwnerNum').value = car.ownerNum || '';
   document.getElementById('iVehNo').value = car.vehicleNo || '';
   document.getElementById('iKm').value = car.km || '';
@@ -1246,8 +1270,7 @@ async function deleteCar(id){
   try {
     await db.collection('cars').doc(id).delete();
   } catch (e) {
-    console.error(e);
-    alert('Could not delete — check your connection.');
+    alert(explainFirebaseError(e));
   }
 }
 
